@@ -1,0 +1,15 @@
+.hands {
+  transform: translateY(0);
+  transition: all 2s;
+}
+
+.hands.focused {
+  transform: translateY(-147px);
+}
+
+
+@media (max-width: 750px) {
+  .hands.focused {
+    transform: translateY(-117px);
+  }
+}
