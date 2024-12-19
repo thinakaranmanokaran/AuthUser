@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Confetti from './Confetti';
 import './../App.css'
 import MonkeyFace from './../assets/images/monkey.gif'
@@ -14,6 +14,9 @@ function Register({ addUser }) {
         email: '',
         password: ''
     });
+
+    const API_URL = "https://authback-jxx5.onrender.com";
+
 
     const [emailExists, setEmailExists] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -58,14 +61,51 @@ function Register({ addUser }) {
     };
 
     // Submit form
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!registerError && formData.name && formData.email && formData.password) {
-            addUser(formData);
+    
+        try {
+            const response = await axios.post(`${API_URL}/api/users`, formData);
+    
+            // Extract token, message, and user
+            const { token, message, user } = response.data;
+    
+            // Save the token locally
+            localStorage.setItem("authToken", token);
+    
+            // Confirm token creation
+            if (token) {
+                console.log("Token Created:", token);
+                alert(`Welcome, ${user.name}! Token created successfully.`);
+            } else {
+                console.error("Token not created");
+                setRegisterError("Token not created. Try again.");
+            }
+    
             setFormData({ name: '', email: '', password: '' });
-            alert("Registered Successfully !");
+            setRegisterError('');
+        } catch (error) {
+            const errorMsg = error.response?.data?.message || "Registration failed";
+            setRegisterError(errorMsg);
+            console.error("Registration Error:", errorMsg);
         }
     };
+    
+    
+
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
+    
+        if (token) {
+            // console.log("Token found:", token);
+            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            alert("You are already authenticated!");
+        } else {
+            console.log("No token found");
+        }
+    }, []);
+    
+    
 
     const [isFocused, setIsFocused] = useState(false);
 
