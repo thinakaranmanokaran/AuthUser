@@ -17,13 +17,22 @@ function App() {
 
   const addUser = async (userData) => {
     try {
-      await axios.post('https://authback-jxx5.onrender.com/api/users', userData);
-      fetchUsers();
-      alert("Registered Successfully !")
+      const response = await axios.post('https://authback-jxx5.onrender.com/api/users', userData);
+  
+      if (response.status === 201) {
+        fetchUsers();
+        alert("Registered Successfully !");
+      }
     } catch (error) {
-      console.error("Error adding user:", error);
+      if (error.response && error.response.status === 400) {
+        alert("User already exists!");
+      } else {
+        console.error("Error adding user:", error);
+        alert("Something went wrong. Please try again.");
+      }
     }
   };
+  
 
   useEffect(() => {
     fetchUsers();
