@@ -34,7 +34,7 @@ const UserProfile = ({ currentUser }) => {
                         </h1>
                         { userProfile && <UserDetails currentUser={currentUser} /> }
                     </div>
-                ) : (<h1 className='text-white'>No User Logged In</h1>)
+                ) : (<h1 className='text-white'></h1>)
             }
         </div>
     </div>
