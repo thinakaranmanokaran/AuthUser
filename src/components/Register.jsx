@@ -7,8 +7,9 @@ import MonkeyLeft from './../assets/images/left_hands(1)(1).png'
 import MonkeyRight from './../assets/images/right_hand(1)(1).png'
 
 import axios from 'axios';
+import OTPform from './OTPform';
 
-function Register({ addUser }) {
+function Register({ addUser, togglePage }) {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -69,10 +70,12 @@ function Register({ addUser }) {
     
             // Extract token, message, and user
             const { token, message, user } = response.data;
-    
+
+            // await sendOTP(formData.email);
+            // setShowOTP(true);
             // Save the token locally
             localStorage.setItem("authToken", token);
-    
+
             // Confirm token creation
             if (token) {
                 console.log("Token Created:", token);
@@ -105,6 +108,12 @@ function Register({ addUser }) {
         }
     }, []);
     
+
+    const [showOTP, setShowOTP ] = useState(false);
+    
+    function togglePage() {
+        setShowOTP(!showOTP);
+    }
     
 
     const [isFocused, setIsFocused] = useState(false);
@@ -123,9 +132,9 @@ function Register({ addUser }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className='bg-[#ffffff10] border-[#ffffff20] backdrop-blur-xl border-2  flex flex-col w-full  items-center h-[70vh] p-6  rounded-[40px] '  >
+        <form onSubmit={handleSubmit} className='bg-[#ffffff10] border-[#ffffff20] backdrop-blur-xl border-2 overflow-y-hidden flex flex-col w-full  items-center h-[70vh] p-6  rounded-[40px] '  >
             <h1 className='font-upper w-full text-lg md:text-2xl text-white ' >Register</h1>
-            <div className='md:flex w-full  justify-between  ' >
+            <div className={`md:flex w-full  justify-between transition-all duration-500 ${showOTP ? "-mt-[70vh]" : "ml-0" } `} >
                 <Monkey className={`block md:hidden`} />
                 <div className='flex -translate-y-16 md:translate-y-0 flex-col space-y-4 mt-10 w-full max-w-2/4 font-sftext text-sm pl-4 h-full' >
                     <input
@@ -180,7 +189,7 @@ function Register({ addUser }) {
                         <div className='w-4 h-4 bg-white transition-all duration-300 shadow-md peer-checked:bg-[#6EACDA]  rounded-full absolute -translate-x-[129px]   peer-checked:-translate-x-[117px]  ' ></div>
                         Show Password
                     </label>
-                    <button type="submit" className='bg-[#6EACDA] text-white shadow-md translate-y-3 h-10 rounded-xl scale-100 hover:scale-95 transition-all duration-300 ' >Submit</button>
+                    <button type="submit" className={`bg-[#6EACDA] text-white shadow-md translate-y-3 h-10 rounded-xl scale-100 hover:scale-95 transition-all duration-300 disabled:cursor-not-allowed   `} disabled={registerError !== "Valid Email"}  >Submit</button>
 
                 </div>
                 <div>
@@ -190,6 +199,13 @@ function Register({ addUser }) {
                         <Monkey />
                     </div>
                 </div>
+                <div className=" top-1/2 -translate-y-1/2 bg-white bg-opacity-10 p-1 h-fit rounded-full space-y-1 absolute right-2 " >
+                    <div className={`bg-white w-2 transition-all duration-300 cursor-pointer ${showOTP ? "h-2 bg-opacity-60" : "h-4 bg-opacity-100"}  rounded-full`} onClick={togglePage} ></div>
+                    <div className={`bg-white w-2 transition-all duration-300 cursor-pointer ${showOTP ? "h-4 bg-opacity-100" : "h-2 bg-opacity-60"}  rounded-full`} onClick={togglePage} ></div>
+                </div>
+            </div>
+            <div>
+                <OTPform togglePage={togglePage} email={formData.email} />
             </div>
         </form>
     );
