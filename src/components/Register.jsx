@@ -64,47 +64,27 @@ function Register({ addUser, togglePage }) {
     // Submit form
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
         try {
-            const response = await axios.post(`${API_URL}/api/users`, formData);
-    
-            // Extract token, message, and user
-            const { token, message, user } = response.data;
-
-            // await sendOTP(formData.email);
-            // setShowOTP(true);
-            // Save the token locally
-            localStorage.setItem("authToken", token);
-
-            // Confirm token creation
-            if (token) {
-                console.log("Token Created:", token);
-                alert(`Welcome, ${user.name}! Token created successfully.`);
-            } else {
-                console.error("Token not created");
-                setRegisterError("Token not created. Try again.");
-            }
-    
-            setFormData({ name: '', email: '', password: '' });
-            setRegisterError('');
+            const { data } = await axios.post(`${API_URL}/api/users/register`, formData);
+            localStorage.setItem('authToken', data.token);
+            // setFormData({ name: '', email: '', password: '' });
+            // alert(`Welcome, ${data.user}! Registration successful.`);
+            setShowOTP(true);
         } catch (error) {
-            const errorMsg = error.response?.data?.message || "Registration failed";
-            setRegisterError(errorMsg);
-            console.error("Registration Error:", errorMsg);
+            setRegisterError(error.response?.data?.message || "Registration failed");
+            console.log(error);
+            
         }
     };
     
     
+    // const toggleOTPPage = () => setShowOTP(!showOTP);
 
     useEffect(() => {
-        const token = localStorage.getItem("authToken");
-    
+        const token = localStorage.getItem('authToken');
         if (token) {
-            // console.log("Token found:", token);
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            alert("You are already authenticated!");
-        } else {
-            console.log("No token found");
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            // alert('You are already authenticated!');
         }
     }, []);
     
@@ -174,10 +154,8 @@ function Register({ addUser, togglePage }) {
                         onChange={handleChange}
                         required
                         onFocus={() => setIsFocused(true)}
-                        // onBlur={() => setIsFocused(false)}
                         className=' border-b-[1px] password  bg-transparent text-white  focus:border-[#D8D8D8]  focus:outline-none placeholder:text-white border-[#B2B8A3] w-full h-8  pl-3   '
                     />
-                    {/* <div className='w-20 absolute  h-1 rounded-lg bg-white ' ></div> */}
                     <label className="flex items-center justify-end text-white text-sm cursor-pointer select-none ">
                         <input
                             type="checkbox"
