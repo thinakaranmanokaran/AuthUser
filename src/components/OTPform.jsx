@@ -35,25 +35,34 @@ const OTPform = ({ togglePage, email }) => {
         e.preventDefault();
     };
 
-    const handleVerify = async () => {
+    const handleVerify = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+    
+        // Combine the values from input fields into a single OTP string
         const otp = inputsRef.current.map((input) => input.value).join("");
         if (otp.length !== 5) {
             setOtpError("Please enter a valid 5-digit OTP.");
             return;
         }
-
+    
         try {
-            const response = await axios.post(`${API_URL}/api/auth/verify-otp`, {
+            // Make an API request to verify the OTP
+            const { data } = await axios.post(`${API_URL}/api/auth/verify-otp`, {
                 email,
                 otp,
             });
-
-            if (response.data.success) {
+    
+            // Check if verification is successful
+            if (data.token) {
+                // Store token in localStorage
+                localStorage.setItem("authToken", data.token);
+    
+                // Notify the user and redirect to another page if necessary
                 alert("Verification successful! Your account is now active.");
-                setOtpError("");
-                togglePage(); // Navigate to another page or update the UI
+                setOtpError(""); // Clear error messages
             } else {
-                setOtpError(response.data.message || "Invalid OTP. Try again.");
+                // Handle cases where success is not true
+                setOtpError(data.message || "Invalid OTP. Try again.");
             }
         } catch (error) {
             console.error("OTP verification failed:", error);
@@ -62,6 +71,7 @@ const OTPform = ({ togglePage, email }) => {
             );
         }
     };
+    
 
     return (
         <div className="flex flex-col justify-center items-center h-full mt-28">
@@ -88,7 +98,7 @@ const OTPform = ({ togglePage, email }) => {
                         />
                     ))}
             </div>
-            {/* {otpError && <div className="text-red-500 text-sm mt-2">{otpError}</div>} */}
+            {otpError && <div className={`   text-sm mt-2 ${otpError === "Registration successful" ? "text-green-500" : "text-red-500"}`}>{otpError}</div>}
             <div className="flex justify-between w-fit space-x-2 mt-4 items-center">
                 <button
                     onClick={togglePage}

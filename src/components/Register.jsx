@@ -66,7 +66,7 @@ function Register({ addUser, togglePage }) {
         e.preventDefault();
         try {
             const { data } = await axios.post(`${API_URL}/api/users/register`, formData);
-            localStorage.setItem('authToken', data.token);
+            // localStorage.setItem('authToken', data.token);
             // setFormData({ name: '', email: '', password: '' });
             // alert(`Welcome, ${data.user}! Registration successful.`);
             setShowOTP(true);
