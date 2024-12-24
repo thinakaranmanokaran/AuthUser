@@ -16,7 +16,7 @@ const UserProfile = ({ currentUser }) => {
             <div>
                 <div className='bg-white transition-opacity duration-300 p-2 px-3 rounded-lg text-sm font-para text-white backdrop-blur-lg bg-opacity-10 absolute right-0 ' >
                     <div>
-                        {currentUser.email}
+                        {currentUser.name}
                     </div>
                 </div>
             </div>
@@ -29,8 +29,9 @@ const UserProfile = ({ currentUser }) => {
             {
                 currentUser ? (
                     <div key={currentUser._id}  className=' ' >
-                        <h1 onClick={showProfile} className='  mb-2 bg-white hover:bg-opacity-20 w-fit transition-all duration-300 p-1 rounded-full bg-opacity-10 backdrop-blur-lg ' >
-                            <img src={Skull} className='w-12 h-12 rounded-full bg-black p-2' alt="" srcset="" />
+                        <h1 onClick={showProfile} className='  mb-2 bg-white hover:bg-opacity-20 w-10 h-10 cursor-pointer flex justify-center items-center transition-all duration-300   rounded-full bg-opacity-10 backdrop-blur-lg ' >
+                            {/* <img src={Skull} className='w-12 h-12 rounded-full bg-black p-2' alt="" srcset="" /> */}
+                            <div className='text-2xl text-white font-upper leading-none pt-1   ' >{currentUser.name.charAt(0).toUpperCase()}</div>
                         </h1>
                         { userProfile && <UserDetails currentUser={currentUser} /> }
                     </div>

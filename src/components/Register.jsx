@@ -177,7 +177,7 @@ function Register({ addUser, togglePage }) {
                         <Monkey />
                     </div>
                 </div>
-                <div className=" top-1/2 -translate-y-1/2 bg-white bg-opacity-10 p-1 h-fit rounded-full space-y-1 absolute right-2 " >
+                <div className=" top-4 lg:top-1/2 lg:-translate-y-1/2 bg-white bg-opacity-10 p-1 h-fit rounded-full space-y-1 absolute right-2 " >
                     <div className={`bg-white w-2 transition-all duration-300 cursor-pointer ${showOTP ? "h-2 bg-opacity-60" : "h-4 bg-opacity-100"}  rounded-full`} onClick={togglePage} ></div>
                     <div className={`bg-white w-2 transition-all duration-300 cursor-pointer ${showOTP ? "h-4 bg-opacity-100" : "h-2 bg-opacity-60"}  rounded-full`} onClick={togglePage} ></div>
                 </div>
