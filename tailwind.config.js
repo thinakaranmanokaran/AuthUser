@@ -7,6 +7,8 @@ export default {
         upper: "upper",
         sftext: "sftext",
         para: "para",
+        sftitle: "sftitle",
+        aileron: "aileron",
       },
     },
   },

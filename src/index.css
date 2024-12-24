@@ -18,6 +18,16 @@
     src: url('./assets/fonts/paragrabh/Urbanist-VariableFont_wght.ttf' );
 }
 
+@font-face {
+    font-family: sftitle;
+    src: url('./assets/fonts/title/SF-Pro-Display-Bold.otf' );
+}
+
+@font-face {
+    font-family: aileron;
+    src: url('./assets/fonts/paragrabh/Aileron-SemiBold.otf' );
+}
+
 body{
     overflow-x: hidden;
     overflow-y: hidden;
